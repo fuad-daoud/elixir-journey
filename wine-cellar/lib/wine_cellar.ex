@@ -9,30 +9,15 @@ defmodule WineCellar do
 
   def filter(cellar, color, opts \\ []) do
     cellar
-    |> Keyword.filter(fn {_, v} ->
-      cond do
-        length(opts) == 0 ->
-          true
-
-        opts[:year] != nil and opts[:country] != nil ->
-          elem(v, 1) == opts[:year] and elem(v, 2) == opts[:country]
-
-        opts[:year] != nil ->
-          elem(v, 1) == opts[:year]
-
-        opts[:country] != nil ->
-          elem(v, 2) == opts[:country]
-
-        true ->
-          true
-      end
-    end)
     |> Keyword.get_values(color)
+    |> filter_by_year(opts[:year])
+    |> filter_by_country(opts[:country])
   end
 
   # The functions below do not need to be modified.
 
   defp filter_by_year(wines, year)
+  defp filter_by_year(wines, nil), do: wines
   defp filter_by_year([], _year), do: []
 
   defp filter_by_year([{_, year, _} = wine | tail], year) do
@@ -44,6 +29,7 @@ defmodule WineCellar do
   end
 
   defp filter_by_country(wines, country)
+  defp filter_by_country(wines, nil), do: wines
   defp filter_by_country([], _country), do: []
 
   defp filter_by_country([{_, _, country} = wine | tail], country) do
