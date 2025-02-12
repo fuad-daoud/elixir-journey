@@ -9,28 +9,25 @@ defmodule WineCellar do
 
   def filter(cellar, color, opts \\ []) do
     cellar
-    |> Enum.filter(fn {k, v} ->
-      options_filter =
-        cond do
-          length(opts) == 0 ->
-            true
+    |> Keyword.filter(fn {_, v} ->
+      cond do
+        length(opts) == 0 ->
+          true
 
-          opts[:year] != nil and opts[:country] != nil ->
-            elem(v, 1) == opts[:year] and elem(v, 2) == opts[:country]
+        opts[:year] != nil and opts[:country] != nil ->
+          elem(v, 1) == opts[:year] and elem(v, 2) == opts[:country]
 
-          opts[:year] != nil ->
-            elem(v, 1) == opts[:year]
+        opts[:year] != nil ->
+          elem(v, 1) == opts[:year]
 
-          opts[:country] != nil ->
-            elem(v, 2) == opts[:country]
+        opts[:country] != nil ->
+          elem(v, 2) == opts[:country]
 
-          true ->
-            true
-        end
-
-      k == color and options_filter
+        true ->
+          true
+      end
     end)
-    |> Enum.map(fn {_, v} -> v end)
+    |> Keyword.get_values(color)
   end
 
   # The functions below do not need to be modified.
