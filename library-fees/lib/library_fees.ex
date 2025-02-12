@@ -1,18 +1,13 @@
 defmodule LibraryFees do
-  def datetime_from_string(string) do
-    {_, d} =
-      string
-      |> String.replace("T", " ")
-      |> String.replace("Z", "")
-      |> NaiveDateTime.from_iso8601()
+  @noon 12
+  @discount 0.5
 
-    d
+  def datetime_from_string(string) do
+    NaiveDateTime.from_iso8601!(string)
   end
 
   def before_noon?(datetime) do
-    datetime
-    |> NaiveDateTime.to_time()
-    |> Time.before?(~T[12:00:00])
+    datetime.hour < @noon
   end
 
   def return_date(checkout_datetime) do
@@ -46,32 +41,16 @@ defmodule LibraryFees do
   def calculate_late_fee(checkout, return, rate) do
     checkout = checkout |> datetime_from_string()
     return = return |> datetime_from_string()
-    days = days_late(checkout, return)
 
-    {_, expected_date} =
+    days =
       checkout
       |> return_date()
-      |> NaiveDateTime.new(~T[00:00:00])
+      |> days_late(return)
 
-    expected_days = days_late(checkout, expected_date)
-
-    case {days, before_noon?(checkout)} do
-      {x, _} when x <= 28 ->
-        0
-
-      {29, true} ->
-        rate
-
-      {29, false} ->
-        0
-
-      {30, false} ->
-        rate
-
-      {_, _} ->
-        if monday?(return),
-          do: div(rate * (days - expected_days), 2),
-          else: rate * (days - expected_days)
+    if monday?(return) do
+      floor(rate * days * @discount)
+    else
+      rate * days
     end
   end
 end
