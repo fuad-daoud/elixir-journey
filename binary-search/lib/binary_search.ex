@@ -47,5 +47,5 @@ defmodule BinarySearch do
     end
   end
 
-  defp get_mid(left, right), do: trunc((left + right) / 2)
+  defp get_mid(left, right), do: div(left + right, 2)
 end
