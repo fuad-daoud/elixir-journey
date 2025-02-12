@@ -1,12 +1,9 @@
 defmodule PaintByNumber do
+  def palette_bit_size(color_count) when color_count == 0, do: 0
+  def palette_bit_size(color_count) when color_count <= 2, do: 1
+
   def palette_bit_size(color_count) do
-    log2(0, 0, color_count) - 1
-  end
-
-  defp log2(value, power, number) when value >= number, do: power
-
-  defp log2(_value, power, number) do
-    log2(Integer.pow(2, power), power + 1, number)
+    1 + palette_bit_size(color_count / 2)
   end
 
   def empty_picture() do
