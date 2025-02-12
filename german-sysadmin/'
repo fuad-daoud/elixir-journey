@@ -1,0 +1,27 @@
+defmodule Username do
+  # def sanitize([first_letter | rest]) do
+  #   case first_letter do
+  #     "ä" ->
+  #       ~c"ae" ++ sanitize(rest)
+  #
+  #     "ö" ->
+  #       ~c"oe" ++ sanitize(rest)
+  #
+  #     "ü" ->
+  #       ~c"ue" ++ sanitize(rest)
+  #
+  #     "ß" ->
+  #       ~c"ss" ++ sanitize(rest)
+  #
+  #     first_letter when first_letter in ?a..?z or first_letter in ?A..?Z ->
+  #       first_letter ++ sanitize(rest)
+  #
+  #     _ ->
+  #       sanitize(rest)
+  #   end
+  # end
+
+  def sanitize([first_letter | rest]) do
+    first_letter in ?a..?z or first_letter in ?A..?Z
+  end
+end
