@@ -9,7 +9,7 @@ defmodule Chessboard do
 
   def ranks do
     rank_range()
-    |> Enum.map(fn x -> x end)
+    |> Enum.to_list()
   end
 
   def files do
