@@ -10,10 +10,11 @@ defmodule CaptainsLog do
   end
 
   def random_stardate() do
-    Enum.random(4_100_000..4_200_000) / 100
+    :rand.uniform() + (:rand.uniform(1000) + 41000)
   end
 
   def format_stardate(stardate) do
-    :erlang.float_to_binary(stardate, decimals: 1)
+    :io_lib.format("~.1f", [stardate])
+    |> List.to_string()
   end
 end
