@@ -27,7 +27,6 @@ defmodule BinarySearch do
     search(numbers, key, left, get_mid(left, right), right)
   end
 
-  @spec search(tuple, integer, integer, integer, integer) :: {:ok, integer} | :not_found
   defp search(_, _, left, _, right) when left > right, do: :not_found
 
   defp search(numbers, key, left, mid, right) do
