@@ -9,10 +9,6 @@ defmodule Newsletter do
     File.open!(path, [:write])
   end
 
-  defp open_log(path, mods) do
-    File.open!(path, mods)
-  end
-
   def log_sent_email(pid, email) do
     IO.puts(pid, email)
   end
@@ -28,13 +24,6 @@ defmodule Newsletter do
 
     pid
     |> IO.write("")
-
-    pid
-    |> close_log()
-
-    pid =
-      log_path
-      |> open_log([:append])
 
     emails_path
     |> read_emails()
