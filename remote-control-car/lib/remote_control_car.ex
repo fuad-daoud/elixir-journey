@@ -4,15 +4,7 @@ defmodule RemoteControlCar do
             distance_driven_in_meters: 0,
             nickname: ""
 
-  def new() do
-    %RemoteControlCar{
-      battery_percentage: 100,
-      distance_driven_in_meters: 0,
-      nickname: "none"
-    }
-  end
-
-  def new(nickname) do
+  def new(nickname \\ "none") do
     %RemoteControlCar{
       battery_percentage: 100,
       distance_driven_in_meters: 0,
@@ -21,42 +13,39 @@ defmodule RemoteControlCar do
   end
 
   def display_distance(%RemoteControlCar{
-        battery_percentage: _battery_percentage,
-        distance_driven_in_meters: distance_driven_in_meters,
-        nickname: _nickname
+        distance_driven_in_meters: distance
       }) do
-    "#{distance_driven_in_meters} meters"
+    "#{distance} meters"
   end
 
   def display_battery(%RemoteControlCar{
-        battery_percentage: battery_percentage,
-        distance_driven_in_meters: _distance_driven_in_meters,
-        nickname: _nickname
+        battery_percentage: 0
+      }),
+      do: "Battery empty"
+
+  def display_battery(%RemoteControlCar{
+        battery_percentage: battery
       }) do
-    if battery_percentage == 0 do
-      "Battery empty"
-    else
-      "Battery at #{battery_percentage}%"
-    end
+    "Battery at #{battery}%"
   end
 
-  def drive(%RemoteControlCar{
-        battery_percentage: battery_percentage,
-        distance_driven_in_meters: distance_driven_in_meters,
-        nickname: nickname
-      }) do
-    if battery_percentage == 0 do
-      %RemoteControlCar{
-        battery_percentage: battery_percentage,
-        distance_driven_in_meters: distance_driven_in_meters,
-        nickname: nickname
-      }
-    else
-      %RemoteControlCar{
-        battery_percentage: battery_percentage - 1,
-        distance_driven_in_meters: distance_driven_in_meters + 20,
-        nickname: nickname
-      }
-    end
+  def drive(
+        %RemoteControlCar{
+          battery_percentage: 0
+        } = remote_car
+      ),
+      do: remote_car
+
+  def drive(
+        %RemoteControlCar{
+          battery_percentage: battery,
+          distance_driven_in_meters: distance
+        } = remote_car
+      ) do
+    %RemoteControlCar{
+      remote_car
+      | battery_percentage: battery - 1,
+        distance_driven_in_meters: distance + 20
+    }
   end
 end
