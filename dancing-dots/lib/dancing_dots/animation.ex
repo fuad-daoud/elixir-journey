@@ -39,11 +39,13 @@ defmodule DancingDots.Zoom do
     else
       velocity = Keyword.get(options, :velocity)
 
-      if is_integer(velocity) do
-        {:ok, options}
-      else
-        {:error,
-         "The :velocity option is required, and its value must be a number. Got: #{inspect(velocity)}"}
+      cond do
+        is_integer(velocity) ->
+          {:ok, options}
+
+        true ->
+          {:error,
+           "The :velocity option is required, and its value must be a number. Got: #{inspect(velocity)}"}
       end
     end
   end
