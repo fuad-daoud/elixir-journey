@@ -4,10 +4,11 @@ defmodule NewPassport do
            enter_building(now),
          {:ok, manual} <- find_counter_information(now),
          number <- manual.(birthday),
-         {:ok, checksum} <- stamp_form(timestamp, number, form) do
-      {:ok, get_new_passport_number(timestamp, number, checksum)}
+         {:ok, checksum} <- stamp_form(timestamp, number, form),
+         new_number <- get_new_passport_number(timestamp, number, checksum) do
+      {:ok, new_number}
     else
-      {:error, error} -> {:error, error}
+      {:error, msg} -> {:error, msg}
       {:coffee_break, _} -> {:retry, NaiveDateTime.add(now, 15, :minute)}
     end
   end
