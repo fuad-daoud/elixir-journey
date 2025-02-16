@@ -92,8 +92,4 @@ defmodule TakeANumberDeluxe do
   def reset_state(machine) do
     GenServer.call(machine, {:reset})
   end
-
-  # Server callbacks
-
-  # Please implement the necessary callbacks
 end
